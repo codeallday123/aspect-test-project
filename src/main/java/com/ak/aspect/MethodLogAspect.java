@@ -7,14 +7,13 @@ import org.aspectj.lang.annotation.Aspect;
 @Aspect
 public class MethodLogAspect {
 
-	@Around("@annotation( MethodLog) && (execution(* com.ak.*(..)))")
+	@Around("@annotation(MethodLog) && execution(* com.ak..*(..))")
 	public Object wrap(final ProceedingJoinPoint joinPoint) throws Throwable {
-		System.out.println("***Aspect invoked before calling method***");
-		
-		final Object obj = joinPoint.proceed();
-		
-		System.out.println("***Aspect invoked after calling method***");
-		
-		return obj;
+		System.out.println("[BEFORE] " + joinPoint);
+		try {
+			return joinPoint.proceed();
+		} finally {
+			System.out.println("[AFTER]  " + joinPoint);
+		}
 	}
 }
